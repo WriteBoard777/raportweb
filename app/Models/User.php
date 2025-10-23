@@ -69,13 +69,24 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    // public function siswas() { return $this->hasMany(Siswa::class); }
-    
-    // public function mapel()
-    // {
-    //     return $this->belongsToMany(Mapel::class, 'mapel_user')->withTimestamps();
-    // }
+    // 🔗 Relasi
+    public function siswas()
+    {
+        return $this->hasMany(Siswa::class);
+    }
 
-    // public function tps() { return $this->hasMany(Tp::class); }
-    // public function nilais() { return $this->hasMany(Nilai::class); }
+    public function tps()
+    {
+        return $this->hasMany(Tp::class);
+    }
+
+    public function nilais()
+    {
+        return $this->hasMany(Nilai::class);
+    }
+
+    public function mapels()
+    {
+        return $this->belongsToMany(Mapel::class)->withTimestamps();
+    }
 }

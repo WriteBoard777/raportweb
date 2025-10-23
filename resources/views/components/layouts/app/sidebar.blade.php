@@ -13,7 +13,54 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Menu')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Home') }}</flux:navlist.item>
+                    <flux:navlist.item 
+                        icon="home" 
+                        :href="route('dashboard')" 
+                        :current="request()->routeIs('dashboard')" 
+                        wire:navigate>
+                        {{ __('Home') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
+                        :href="route('siswa.index')" 
+                        :current="request()->routeIs('siswa.index')" 
+                        wire:navigate>
+                        {{ __('Siswa') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
+                        :href="route('mapel.index')" 
+                        :current="request()->routeIs('mapel.index')" 
+                        wire:navigate>
+                        {{ __('Mata Pelajaran') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
+                        :href="route('tp.index')" 
+                        :current="request()->routeIs('tp.index')" 
+                        wire:navigate>
+                        {{ __('Tujuan Pembelajaran') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
+                        :href="route('nilai.index')" 
+                        :current="request()->routeIs('nilai.index')" 
+                        wire:navigate>
+                        {{ __('Nilai Akademik') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
+                        :href="route('leger.index')" 
+                        :current="request()->routeIs('leger.index')" 
+                        wire:navigate>
+                        {{ __('Leger') }}
+                    </flux:navlist.item>
+
                 </flux:navlist.group>
             </flux:navlist>
 
@@ -126,6 +173,7 @@
         </flux:header>
 
         {{ $slot }}
+
 
         @fluxScripts
     </body>
