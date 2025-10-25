@@ -1,30 +1,43 @@
 <x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+    <div class="w-3xl flex flex-col gap-6">
+        <x-auth-header 
+            :title="__('Create an account')" 
+            :description="__('Masukkan detail di bawah untuk membuat akun Anda')" />
 
         <!-- Session Status -->
         <x-auth-session-status class="text-center" :status="session('status')" />
 
         <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
             @csrf
+
             <div class="flex flex-row gap-6 justify-center">
-                {{-- left side --}}
-                <div class="flex flex-col gap-6">
+                {{-- LEFT SIDE --}}
+                <div class="w-full flex flex-col gap-6">
+
                     <!-- Name -->
                     <flux:input
                         name="name"
-                        :label="__('Name')"
+                        :label="__('Nama Lengkap')"
                         type="text"
                         required
-                        autofocus
                         autocomplete="name"
-                        :placeholder="__('Full name')"
+                        :placeholder="__('Nama lengkap anda')"
                     />
 
-                    <!-- Email Address -->
+                    <!-- NIP -->
+                    <flux:input
+                        name="nip"
+                        :label="__('NIP')"
+                        type="text"
+                        required
+                        autocomplete="nip"
+                        :placeholder="__('NIP anda')"
+                    />
+
+                    <!-- Email -->
                     <flux:input
                         name="email"
-                        :label="__('Email address')"
+                        :label="__('Email')"
                         type="email"
                         required
                         autocomplete="email"
@@ -45,27 +58,37 @@
                     <!-- Confirm Password -->
                     <flux:input
                         name="password_confirmation"
-                        :label="__('Confirm password')"
+                        :label="__('Konfirmasi Password')"
                         type="password"
                         required
                         autocomplete="new-password"
-                        :placeholder="__('Confirm password')"
+                        :placeholder="__('Konfirmasi password')"
                         viewable
                     />
 
                     <!-- Kelas -->
                     <flux:input
                         name="kelas"
-                        :label="__('Kelas')"
+                        :label="__('Kelas (Rombel)')"
                         type="text"
                         required
                         autocomplete="kelas"
-                        :placeholder="__('Nama Rombel')"
+                        :placeholder="__('Nama rombel yang diampu')"
+                    />
+
+                    <!-- Alamat -->
+                    <flux:input
+                        name="alamat"
+                        :label="__('Alamat Sekolah')"
+                        type="text"
+                        autocomplete="alamat"
+                        :placeholder="__('Alamat lengkap sekolah')"
                     />
                 </div>
 
-                {{-- right side --}}
-                <div class="flex flex-col gap-6">
+                {{-- RIGHT SIDE --}}
+                <div class="w-full flex flex-col gap-6">
+                    
                     <!-- Asal Sekolah -->
                     <flux:input
                         name="asal_sekolah"
@@ -73,17 +96,35 @@
                         type="text"
                         required
                         autocomplete="asal_sekolah"
-                        :placeholder="__('Asal Sekolah')"
+                        :placeholder="__('Nama sekolah')"
                     />
+
+                    <!-- Jenis Sekolah -->
+                    <flux:select
+                        name="jenis_sekolah"
+                        :label="__('Jenis Sekolah')"
+                        required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Negeri">Negeri</option>
+                        <option value="Swasta">Swasta</option>
+                    </flux:select>
 
                     <!-- Nama Kepala Sekolah -->
                     <flux:input
                         name="nama_kepala_sekolah"
                         :label="__('Nama Kepala Sekolah')"
                         type="text"
-                        required
                         autocomplete="nama_kepala_sekolah"
-                        :placeholder="__('Nama Kepsek beserta gelar')"
+                        :placeholder="__('Nama lengkap kepala sekolah beserta gelar')"
+                    />
+
+                    <!-- NIP Kepala Sekolah -->
+                    <flux:input
+                        name="nip_kepala_sekolah"
+                        :label="__('NIP Kepala Sekolah')"
+                        type="text"
+                        autocomplete="nip_kepala_sekolah"
+                        :placeholder="__('NIP Kepala Sekolah')"
                     />
 
                     <!-- NPSN -->
@@ -91,9 +132,8 @@
                         name="npsn"
                         :label="__('NPSN')"
                         type="text"
-                        required
                         autocomplete="npsn"
-                        :placeholder="__('NPSN')"
+                        :placeholder="__('Nomor Pokok Sekolah Nasional')"
                     />
 
                     <!-- Tahun Ajaran -->
@@ -101,9 +141,8 @@
                         name="tahun_ajaran"
                         :label="__('Tahun Ajaran')"
                         type="text"
-                        required
                         autocomplete="tahun_ajaran"
-                        :placeholder="__('Tahun Ajaran')"
+                        :placeholder="__('Contoh: 2024/2025')"
                     />
 
                     <!-- Semester -->
@@ -111,23 +150,22 @@
                         name="semester"
                         :label="__('Semester')"
                         type="text"
-                        required
                         autocomplete="semester"
-                        :placeholder="__('Semester')"
+                        :placeholder="__('Contoh: Ganjil / Genap')"
                     />
                 </div>
             </div>
-        
-            <div class="flex items-center px-6">
+
+            <div class="w-full flex items-center">
                 <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('Create account') }}
+                    {{ __('Buat Akun') }}
                 </flux:button>
             </div>
         </form>
 
         <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+            <span>{{ __('Sudah punya akun?') }}</span>
+            <flux:link :href="route('login')" wire:navigate>{{ __('Masuk sekarang') }}</flux:link>
         </div>
     </div>
 </x-layouts.auth>

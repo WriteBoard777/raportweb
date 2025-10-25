@@ -15,6 +15,7 @@ class Form extends Component
     public $nisn;
     public $nis;
     public $nama;
+    public $nama_pgl;
     public $jenis_kelamin;
     public $nama_orang_tua = [];
 
@@ -31,6 +32,7 @@ class Form extends Component
             'nisn',
             'nis',
             'nama',
+            'nama_pgl',
             'jenis_kelamin',
             'nama_orang_tua',
             'siswaId'
@@ -46,6 +48,7 @@ class Form extends Component
                     'nisn' => $siswa->nisn,
                     'nis' => $siswa->nis,
                     'nama' => $siswa->nama,
+                    'nama_pgl' => $siswa->nama_pgl,
                     'jenis_kelamin' => $siswa->jenis_kelamin,
                     'nama_orang_tua' => json_decode($siswa->nama_orang_tua ?? '[]', true),
                 ]);
@@ -60,6 +63,7 @@ class Form extends Component
             'nisn' => 'required|unique:siswas,nisn,' . $this->siswaId,
             'nis' => 'required|unique:siswas,nis,' . $this->siswaId,
             'nama' => 'required',
+            'nama_pgl' => 'required',
             'jenis_kelamin' => 'required|in:L,P',
         ]);
 
@@ -70,6 +74,7 @@ class Form extends Component
                 'nisn' => $this->nisn,
                 'nis' => $this->nis,
                 'nama' => $this->nama,
+                'nama_pgl' => $this->nama_pgl,
                 'jenis_kelamin' => $this->jenis_kelamin,
                 'nama_orang_tua' => json_encode($this->nama_orang_tua),
             ]
@@ -79,7 +84,7 @@ class Form extends Component
         $this->showForm = false;
 
         // Reset input
-        $this->reset(['siswaId', 'nisn', 'nis', 'nama', 'jenis_kelamin', 'nama_orang_tua']);
+        $this->reset(['siswaId', 'nisn', 'nis', 'nama', 'nama_pgl', 'jenis_kelamin', 'nama_orang_tua']);
 
         // Kirim event ke Index
         $this->dispatch('siswaUpdated');

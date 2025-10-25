@@ -22,12 +22,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'nip',
         'email',
         'password',
-        'kelas',
-        'asal_sekolah',
-        'nama_kepala_sekolah',
         'npsn',
+        'asal_sekolah',
+        'jenis_sekolah',
+        'nama_kepala_sekolah',
+        'nip_kepala_sekolah',
+        'kelas',
+        'alamat',
         'tahun_ajaran',
         'semester',
     ];
@@ -89,4 +93,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Mapel::class)->withTimestamps();
     }
+
+    public function ekstrakurikulers()
+    {
+        return $this->belongsToMany(Ekstrakurikuler::class, 'ekstrakurikuler_user', 'user_id', 'ekstrakurikuler_id');
+    }
+
+    public function nilaiEkstras()
+    {
+        return $this->hasMany(NilaiEkstra::class);
+    }
+
 }

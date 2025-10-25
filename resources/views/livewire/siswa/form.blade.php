@@ -7,6 +7,7 @@
                 <flux:input wire:model="nisn" label="NISN" required />
                 <flux:input wire:model="nis" label="NIS" required />
                 <flux:input wire:model="nama" label="Nama" required />
+                <flux:input wire:model="nama_pgl" label="Nama Panggilan" required />
                 <flux:select wire:model="jenis_kelamin" label="Jenis Kelamin" required>
                     <option value="">-- Pilih --</option>
                     <option value="L">Laki-laki</option>

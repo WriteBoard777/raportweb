@@ -11,19 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('siswas', function (Blueprint $table) {
+        Schema::create('ekstrakurikuler_user', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            
-            $table->uuid('user_id'); // ubah ke uuid
+            $table->uuid('ekstrakurikuler_id');
+            $table->uuid('user_id');
+
+            $table->foreign('ekstrakurikuler_id')->references('id')->on('ekstrakurikulers')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
-            $table->string('nisn')->unique();
-            $table->string('nis')->unique();
-            $table->string('nama');
-            $table->string('nama_pgl');
-            $table->enum('jenis_kelamin', ['L', 'P']);
-            $table->json('nama_orang_tua')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -32,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('siswas');
+        Schema::dropIfExists('ekstrakurikuler_user');
     }
 };
