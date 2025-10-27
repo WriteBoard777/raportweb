@@ -2,44 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Ekstrakurikuler extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
-    public $incrementing = false;
-    protected $keyType = 'string';
+    protected $fillable = [
+        'nama_ekstra',
+        // tambahkan kolom lain kalau di migration ada, mis. 'kode' atau 'deskripsi'
+    ];
 
-    protected $fillable = ['nama_ekstra'];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            if (! $model->id) {
-                $model->id = Str::uuid();
-            }
-        });
-    }
-
-    /**
-     * Relasi ke User (many-to-many)
-     * Setiap ekstrakurikuler bisa dimiliki banyak user/guru
-     */
+    // 🔗 Relasi many-to-many ke User (pivot table: ekstrakurikuler_user or similar)
     public function users()
     {
-        return $this->belongsToMany(User::class, 'ekstrakurikuler_user', 'ekstrakurikuler_id', 'user_id');
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
-    /**
-     * Relasi ke NilaiEkstra (one-to-many)
-     * Setiap ekstrakurikuler memiliki banyak nilai
-     */
-    public function nilaiEkstras()
+    // 🔗 Relasi ke NilaiEkstra (satu ekstrakurikuler --> banyak entri nilai)
+    public function nilai_ekstras()
     {
         return $this->hasMany(NilaiEkstra::class, 'ekstrakurikuler_id');
     }
