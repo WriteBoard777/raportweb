@@ -14,7 +14,9 @@ use App\Livewire\Siswa\Index as SiswaIndex;
 use App\Livewire\Mapel\Index as MapelIndex;
 use App\Livewire\Ekstra\Index as EkstraIndex;
 use App\Livewire\Tp\Index as TpIndex;
+use App\Livewire\Absen\Index as AbsenIndex;
 use App\Livewire\Nilai\Index as NilaiIndex;
+use App\Livewire\NilaiEkstra\Index as NilaiEkstraIndex;
 use App\Livewire\Leger; // <-- Tambahkan komponen Leger
 
 Route::get('/', function () {
@@ -31,7 +33,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('mapel', MapelIndex::class)->name('mapel.index');
     Route::get('ekstra', EkstraIndex::class)->name('ekstra.index');
     Route::get('tp', TpIndex::class)->name('tp.index');
+    Route::get('absen', AbsenIndex::class)->name('absen.index');
     Route::get('nilai', NilaiIndex::class)->name('nilai.index');
+    Route::get('nilai-ekstra', NilaiEkstraIndex::class)->name('nilai-ekstra.index');
 
     // 🔹 ROUTE Leger Nilai
     Route::get('leger', Leger::class)->name('leger.index');

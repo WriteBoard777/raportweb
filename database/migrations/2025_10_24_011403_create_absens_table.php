@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('absens', function (Blueprint $table) {
+        Schema::create('absens', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
             // Relasi ke user (guru penginput)
@@ -27,14 +27,10 @@ return new class extends Migration
             $table->integer('izin')->default(0);
             $table->integer('alfa')->default(0);
 
-            // Informasi periode
-            $table->string('semester');
-            $table->string('tahun_ajaran');
-
             $table->timestamps();
 
             // Unik per siswa per semester per tahun
-            $table->unique(['user_id', 'siswa_id', 'semester', 'tahun_ajaran']);
+            $table->unique(['user_id', 'siswa_id']);
         });
     }
 

@@ -55,10 +55,26 @@
 
                     <flux:navlist.item 
                         icon="home" 
+                        :href="route('absen.index')" 
+                        :current="request()->routeIs('absen.index')" 
+                        wire:navigate>
+                        {{ __('Rekap Absen') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
                         :href="route('nilai.index')" 
                         :current="request()->routeIs('nilai.index')" 
                         wire:navigate>
                         {{ __('Nilai Akademik') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
+                        :href="route('nilai-ekstra.index')" 
+                        :current="request()->routeIs('nilai-ekstra.index')" 
+                        wire:navigate>
+                        {{ __('Nilai Ekstrakurikuler') }}
                     </flux:navlist.item>
 
                     <flux:navlist.item 
