@@ -39,6 +39,14 @@
 
                     <flux:navlist.item 
                         icon="home" 
+                        :href="route('ekstra.index')" 
+                        :current="request()->routeIs('ekstra.index')" 
+                        wire:navigate>
+                        {{ __('Ekstrakurikuler') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="home" 
                         :href="route('tp.index')" 
                         :current="request()->routeIs('tp.index')" 
                         wire:navigate>

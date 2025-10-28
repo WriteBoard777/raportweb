@@ -11,19 +11,18 @@ class Ekstrakurikuler extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'nama_ekstra',
-        // tambahkan kolom lain kalau di migration ada, mis. 'kode' atau 'deskripsi'
+        'user_id',
+        'nama_ekstrakurikuler',
     ];
 
-    // 🔗 Relasi many-to-many ke User (pivot table: ekstrakurikuler_user or similar)
-    public function users()
+    // 🔗 Relasi
+    public function user()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsTo(User::class);
     }
 
-    // 🔗 Relasi ke NilaiEkstra (satu ekstrakurikuler --> banyak entri nilai)
     public function nilai_ekstras()
     {
-        return $this->hasMany(NilaiEkstra::class, 'ekstrakurikuler_id');
+        return $this->hasMany(NilaiEkstra::class);
     }
 }

@@ -12,6 +12,7 @@ use App\Livewire\Settings\TwoFactor;
 // Komponen CRUD baru
 use App\Livewire\Siswa\Index as SiswaIndex;
 use App\Livewire\Mapel\Index as MapelIndex;
+use App\Livewire\Ekstra\Index as EkstraIndex;
 use App\Livewire\Tp\Index as TpIndex;
 use App\Livewire\Nilai\Index as NilaiIndex;
 use App\Livewire\Leger; // <-- Tambahkan komponen Leger
@@ -28,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     // 🔹 ROUTES CRUD (Livewire Pages)
     Route::get('siswa', SiswaIndex::class)->name('siswa.index');
     Route::get('mapel', MapelIndex::class)->name('mapel.index');
+    Route::get('ekstra', EkstraIndex::class)->name('ekstra.index');
     Route::get('tp', TpIndex::class)->name('tp.index');
     Route::get('nilai', NilaiIndex::class)->name('nilai.index');
 

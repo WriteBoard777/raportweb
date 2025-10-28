@@ -96,7 +96,7 @@ class User extends Authenticatable
 
     public function ekstrakurikulers()
     {
-        return $this->belongsToMany(Ekstrakurikuler::class, 'ekstrakurikuler_user', 'user_id', 'ekstrakurikuler_id');
+        return $this->hasMany(Ekstrakurikuler::class);
     }
 
     public function nilaiEkstras()
