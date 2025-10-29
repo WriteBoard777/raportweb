@@ -1,6 +1,6 @@
 <div>
     {{-- 🔹 Modal Create / Edit --}}
-    <flux:modal wire:model="showForm">
+    <flux:modal wire:model="showForm" class="max-w-4xl w-full">
         <form wire:submit.prevent="save" class="space-y-4">
             <flux:heading>{{ $siswaId ? 'Edit Nilai' : 'Tambah Nilai' }}</flux:heading>
 

@@ -1,5 +1,5 @@
 <div>
-    <flux:modal wire:model="showForm">
+    <flux:modal wire:model="showForm" class="max-w-4xl w-full">
         <form wire:submit.prevent="save" class="space-y-4">
             <flux:heading>{{ $siswaId ? 'Edit Siswa' : 'Tambah Siswa' }}</flux:heading>
 
@@ -13,6 +13,9 @@
                     <option value="L">Laki-laki</option>
                     <option value="P">Perempuan</option>
                 </flux:select>
+
+                <div class=""></div>
+
                 <flux:input wire:model="nama_orang_tua.0" label="Nama Ayah" />
                 <flux:input wire:model="nama_orang_tua.1" label="Nama Ibu" />
             </div>
@@ -26,7 +29,7 @@
 
     {{-- 🔹 Modal Konfirmasi Hapus --}}
     <flux:modal wire:model="showDelete">
-        <flux:heading>Konfirmasi Hapus</flux:heading>
+        <flux:heading class="mb-5">Konfirmasi Hapus</flux:heading>
         <p class="text-gray-600 dark:text-gray-300">
             Apakah kamu yakin ingin menghapus siswa ini?
         </p>

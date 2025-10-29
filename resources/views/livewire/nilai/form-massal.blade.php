@@ -1,5 +1,5 @@
 <div>
-    <flux:modal wire:model="showForm" size="xl">
+    <flux:modal wire:model="showForm" class="max-w-4xl w-full">
         <form wire:submit.prevent="save" class="space-y-4">
             <flux:heading>Input Nilai Massal</flux:heading>
 

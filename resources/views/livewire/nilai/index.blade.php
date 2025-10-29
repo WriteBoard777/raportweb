@@ -9,7 +9,7 @@
             <flux:input wire:model.live="search" placeholder="Cari siswa..." class="w-sm" />
 
             <flux:button variant="primary" wire:click="$dispatch('openNilaiMassal', { mapelId: '{{ $mapelId }}' })">
-                Tambah Nilai
+                Masukkan Nilai
             </flux:button>
         </div>
         <flux:select wire:model.live="mapelId" label="Pilih Mapel">
