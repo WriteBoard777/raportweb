@@ -1,7 +1,7 @@
 <section class="w-full">
     <header class="mb-5">
         <h1>Peringkat Siswa</h1>
-        <p>Menampilkan urutan siswa berdasarkan rata-rata nilai</p>
+        <p>Menampilkan urutan siswa berdasarkan Total nilai</p>
     </header>
 
     <div class="flex justify-between items-center mb-6">
@@ -18,7 +18,7 @@
                     <th class="px-4 py-2 text-left text-sm font-semibold">No</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold">Nama Siswa</th>
                     <th class="px-4 py-2 text-left text-sm font-semibold">NIS</th>
-                    <th class="px-4 py-2 text-center text-sm font-semibold">Rata-rata Nilai</th>
+                    <th class="px-4 py-2 text-center text-sm font-semibold">Total Nilai</th>
                     <th class="px-4 py-2 text-center text-sm font-semibold">Peringkat</th>
                 </tr>
             </thead>

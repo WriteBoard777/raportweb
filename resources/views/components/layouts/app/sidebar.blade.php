@@ -22,7 +22,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="academic-cap" 
+                        icon="users" 
                         :href="route('siswa.index')" 
                         :current="request()->routeIs('siswa.index')" 
                         wire:navigate>
@@ -30,7 +30,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="beaker" 
+                        icon="book-open" 
                         :href="route('mapel.index')" 
                         :current="request()->routeIs('mapel.index')" 
                         wire:navigate>
@@ -38,7 +38,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="rocket-launch" 
+                        icon="trophy" 
                         :href="route('ekstra.index')" 
                         :current="request()->routeIs('ekstra.index')" 
                         wire:navigate>
@@ -62,7 +62,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="squares-plus" 
+                        icon="academic-cap" 
                         :href="route('nilai.index')" 
                         :current="request()->routeIs('nilai.index')" 
                         wire:navigate>
@@ -70,7 +70,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="squares-2x2" 
+                        icon="gift" 
                         :href="route('nilai-ekstra.index')" 
                         :current="request()->routeIs('nilai-ekstra.index')" 
                         wire:navigate>

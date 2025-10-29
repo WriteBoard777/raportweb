@@ -29,7 +29,7 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
 
     // Dashboard utama
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
 
     // 🔹 ROUTES CRUD (Livewire Pages)
     Route::get('siswa', SiswaIndex::class)->name('siswa.index');
