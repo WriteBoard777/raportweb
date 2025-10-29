@@ -14,8 +14,8 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
-    public $ekstrakurikulerId;        // ID ekstrakurikuler terpilih
-    public $activeEkstras;   // Daftar ekstrakurikuler milik user
+    public $ekstrakurikulerId;
+    public $activeEkstras;
 
     protected $listeners = ['nilaiEkstraUpdated' => 'refreshData'];
 
@@ -23,7 +23,7 @@ class Index extends Component
     {
         $userId = Auth::id();
 
-        // 🔹 Ambil hanya ekstrakurikuler milik user login
+        // 🔹 Ambil ekstrakurikuler milik user login
         $this->activeEkstras = Ekstrakurikuler::where('user_id', $userId)
             ->orderBy('nama_ekstrakurikuler')
             ->get();
@@ -31,7 +31,7 @@ class Index extends Component
         $this->ekstrakurikulerId = $this->activeEkstras->first()?->id ?? null;
     }
 
-    public function updatedEkstraId()
+    public function updatedEkstrakurikulerId()
     {
         $this->resetPage();
     }
@@ -43,12 +43,19 @@ class Index extends Component
 
     public function render()
     {
-        // 🔹 Filter siswa berdasarkan pencarian
-        $siswas = Siswa::where('nama', 'like', "%{$this->search}%")
+        $userId = Auth::id();
+
+        // 🔹 Hanya siswa milik user login
+        $siswas = Siswa::where('user_id', $userId)
+            ->when($this->search, fn($q) =>
+                $q->where('nama', 'like', "%{$this->search}%")
+                  ->orWhere('nisn', 'like', "%{$this->search}%")
+                  ->orWhere('nis', 'like', "%{$this->search}%")
+            )
             ->orderBy('nama')
             ->paginate(10);
 
-        // 🔹 Ambil nilai ekstrakurikuler untuk siswa & ekstra terpilih
+        // 🔹 Ambil nilai ekstra untuk siswa & ekstra terpilih
         $nilaiData = collect();
         if ($this->ekstrakurikulerId) {
             $nilaiData = NilaiEkstra::where('ekstrakurikuler_id', $this->ekstrakurikulerId)

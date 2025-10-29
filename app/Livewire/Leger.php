@@ -45,7 +45,10 @@ class Leger extends Component
 
     public function render()
     {
-        $siswas = Siswa::where('nama', 'like', "%{$this->search}%")
+        $userId = Auth::id();
+
+        $siswas = Siswa::where('user_id', $userId)
+            ->where('nama', 'like', "%{$this->search}%")
             ->orderBy('nama')
             ->paginate(10);
 

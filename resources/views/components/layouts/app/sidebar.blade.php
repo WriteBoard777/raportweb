@@ -22,7 +22,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="academic-cap" 
                         :href="route('siswa.index')" 
                         :current="request()->routeIs('siswa.index')" 
                         wire:navigate>
@@ -30,7 +30,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="beaker" 
                         :href="route('mapel.index')" 
                         :current="request()->routeIs('mapel.index')" 
                         wire:navigate>
@@ -38,7 +38,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="rocket-launch" 
                         :href="route('ekstra.index')" 
                         :current="request()->routeIs('ekstra.index')" 
                         wire:navigate>
@@ -46,7 +46,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="rectangle-group" 
                         :href="route('tp.index')" 
                         :current="request()->routeIs('tp.index')" 
                         wire:navigate>
@@ -54,7 +54,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="presentation-chart-bar" 
                         :href="route('absen.index')" 
                         :current="request()->routeIs('absen.index')" 
                         wire:navigate>
@@ -62,7 +62,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="squares-plus" 
                         :href="route('nilai.index')" 
                         :current="request()->routeIs('nilai.index')" 
                         wire:navigate>
@@ -70,7 +70,7 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="squares-2x2" 
                         :href="route('nilai-ekstra.index')" 
                         :current="request()->routeIs('nilai-ekstra.index')" 
                         wire:navigate>
@@ -78,11 +78,27 @@
                     </flux:navlist.item>
 
                     <flux:navlist.item 
-                        icon="home" 
+                        icon="server-stack" 
                         :href="route('leger.index')" 
                         :current="request()->routeIs('leger.index')" 
                         wire:navigate>
                         {{ __('Leger') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="fire" 
+                        :href="route('peringkat.index')" 
+                        :current="request()->routeIs('peringkat.index')" 
+                        wire:navigate>
+                        {{ __('Peringkat') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="folder-open" 
+                        :href="route('raport.index')" 
+                        :current="request()->routeIs('raport.index')" 
+                        wire:navigate>
+                        {{ __('Raport') }}
                     </flux:navlist.item>
 
                 </flux:navlist.group>

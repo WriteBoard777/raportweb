@@ -15,8 +15,8 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
-    public $mapelId;         // mapel yang dipilih di combo box
-    public $activeMapels;    // list mapel aktif user
+    public $mapelId;
+    public $activeMapels;
 
     protected $listeners = ['nilaiUpdated' => 'refreshData'];
 
@@ -24,21 +24,15 @@ class Index extends Component
     {
         $userId = Auth::id();
 
-        // Ambil mapel yang aktif untuk user
-        $this->activeMapels = Mapel::orderBy('nama_mapel')
-            ->get()
-            ->filter(function ($mapel) use ($userId) {
-                return DB::table('mapel_user')
-                    ->where('user_id', $userId)
-                    ->where('mapel_id', $mapel->id)
-                    ->exists();
-            });
+        // 🔹 Ambil mapel yang aktif milik user login
+        $this->activeMapels = Mapel::whereHas('users', fn($q) => $q->where('user_id', $userId))
+            ->orderBy('nama_mapel')
+            ->get();
 
         $this->mapelId = $this->activeMapels->first()?->id ?? null;
     }
 
-    // 🔹 Reset halaman ketika mapel diubah
-    public function updatedMapelId($value)
+    public function updatedMapelId()
     {
         $this->resetPage();
     }
@@ -50,12 +44,19 @@ class Index extends Component
 
     public function render()
     {
-        // Ambil data siswa sesuai pencarian
-        $siswas = Siswa::where('nama', 'like', "%{$this->search}%")
+        $userId = Auth::id();
+
+        // 🔹 Hanya siswa milik user login
+        $siswas = Siswa::where('user_id', $userId)
+            ->when($this->search, fn($q) =>
+                $q->where('nama', 'like', "%{$this->search}%")
+                  ->orWhere('nisn', 'like', "%{$this->search}%")
+                  ->orWhere('nis', 'like', "%{$this->search}%")
+            )
             ->orderBy('nama')
             ->paginate(10);
 
-        // Ambil nilai siswa sesuai mapel terpilih
+        // 🔹 Ambil nilai sesuai mapel terpilih
         $nilaiData = collect();
         if ($this->mapelId) {
             $nilaiData = Nilai::where('mapel_id', $this->mapelId)

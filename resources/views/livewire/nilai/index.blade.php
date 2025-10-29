@@ -5,15 +5,22 @@
     </header>
 
     <div class="flex justify-between items-center mb-6">
-        <flux:input wire:model.live="search" placeholder="Cari siswa..." class="w-sm" />
+        <div class="flex gap-4">
+            <flux:input wire:model.live="search" placeholder="Cari siswa..." class="w-sm" />
 
+            <flux:button variant="primary" wire:click="$dispatch('openNilaiMassal', { mapelId: '{{ $mapelId }}' })">
+                Tambah Nilai
+            </flux:button>
+        </div>
         <flux:select wire:model.live="mapelId" label="Pilih Mapel">
             <option value="">-- Pilih Mapel --</option>
             @foreach ($activeMapels as $mapel)
                 <option value="{{ $mapel->id }}">{{ $mapel->nama_mapel }}</option>
             @endforeach
         </flux:select>
+
     </div>
+
 
     <div class="overflow-x-auto border rounded-lg shadow-sm bg-white dark:bg-gray-900">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -84,4 +91,6 @@
 
     {{-- Komponen Form Nilai --}}
     <livewire:nilai.form />
+    <livewire:nilai.form-massal />
+
 </section>

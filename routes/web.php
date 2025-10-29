@@ -18,6 +18,9 @@ use App\Livewire\Absen\Index as AbsenIndex;
 use App\Livewire\Nilai\Index as NilaiIndex;
 use App\Livewire\NilaiEkstra\Index as NilaiEkstraIndex;
 use App\Livewire\Leger; // <-- Tambahkan komponen Leger
+use App\Livewire\Peringkat; // <-- Tambahkan komponen Peringkat
+use App\Livewire\Raport;
+use App\Livewire\CetakRaport;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +42,14 @@ Route::middleware(['auth'])->group(function () {
 
     // 🔹 ROUTE Leger Nilai
     Route::get('leger', Leger::class)->name('leger.index');
+
+    Route::get('peringkat', Peringkat::class)->name('peringkat.index');
+    Route::get('/piagam/{siswaId}/{peringkat}', \App\Livewire\PeringkatPiagam::class)
+        ->name('piagam.peringkat');
+
+    Route::get('/raport', Raport::class)->name('raport.index');
+    Route::get('/raport/{siswaId}', CetakRaport::class)->name('raport.cetak');
+
 
     // 🔹 ROUTES SETTINGS bawaan StarterKit
     Route::redirect('settings', 'settings/profile');

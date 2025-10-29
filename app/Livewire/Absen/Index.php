@@ -13,6 +13,7 @@ class Index extends Component
     use WithPagination;
 
     public $search = '';
+
     protected $listeners = ['absenUpdated' => 'refreshData'];
 
     public function refreshData()
@@ -24,10 +25,17 @@ class Index extends Component
     {
         $userId = Auth::id();
 
-        $siswas = Siswa::where('nama', 'like', "%{$this->search}%")
+        // 🔹 Hanya siswa milik user login
+        $siswas = Siswa::where('user_id', $userId)
+            ->when($this->search, fn($q) =>
+                $q->where('nama', 'like', "%{$this->search}%")
+                  ->orWhere('nisn', 'like', "%{$this->search}%")
+                  ->orWhere('nis', 'like', "%{$this->search}%")
+            )
             ->orderBy('nama')
             ->paginate(10);
 
+        // 🔹 Ambil data absen siswa tersebut
         $absenData = Absen::where('user_id', $userId)
             ->whereIn('siswa_id', $siswas->pluck('id'))
             ->get()
@@ -39,4 +47,3 @@ class Index extends Component
         ]);
     }
 }
-
