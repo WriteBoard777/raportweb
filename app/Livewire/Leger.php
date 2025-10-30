@@ -95,6 +95,7 @@ class Leger extends Component
     {
         $userId = Auth::id();
 
+        // Ambil mapel milik user
         $mapels = Mapel::orderBy('nama_mapel')
             ->get()
             ->filter(fn($mapel) =>
@@ -105,30 +106,33 @@ class Leger extends Component
             );
 
         $mapelIds = $mapels->pluck('id')->toArray();
-        $siswas = Siswa::orderBy('nama')->get();
 
+        // 🔹 Filter siswa milik user yang login
+        $siswas = Siswa::where('user_id', $userId)
+            ->orderBy('nama')
+            ->get();
+
+        // 🔹 Ambil nilai hanya dari mapel & siswa milik user
         $nilaiData = Nilai::whereIn('mapel_id', $mapelIds)
+            ->whereIn('siswa_id', $siswas->pluck('id'))
             ->get()
             ->groupBy('siswa_id');
 
-        // Hitung total nilai & peringkat
+        // 🔹 Hitung total nilai & peringkat
         $ranking = [];
         foreach ($siswas as $siswa) {
             $total = 0;
             foreach ($mapels as $mapel) {
-                $nilai = isset($nilaiData[$siswa->id])
-                    ? $nilaiData[$siswa->id]->firstWhere('mapel_id', $mapel->id)
-                    : null;
-            
+                $nilai = $nilaiData[$siswa->id]->firstWhere('mapel_id', $mapel->id) ?? null;
                 $nilaiAkhir = $nilai
                     ? round(($nilai->nilai_harian + $nilai->nilai_uts + $nilai->nilai_uas) / 3)
-                    : null;
-            
-                $total += $nilaiAkhir ?? 0;
+                    : 0;
+                $total += $nilaiAkhir;
             }
             $ranking[$siswa->id] = $total;
         }
 
+        // 🔹 Urutkan peringkat
         arsort($ranking);
 
         $ranks = [];
@@ -137,8 +141,9 @@ class Leger extends Component
             $ranks[$siswaId] = $rank++;
         }
 
+        // 🔹 Generate PDF
         $pdf = Pdf::loadView('pdf.leger_kelas', compact('siswas', 'mapels', 'nilaiData', 'ranks'))
-            ->setPaper('a4','landscape');
+            ->setPaper('a4', 'landscape');
 
         return response()->streamDownload(fn() => print($pdf->output()), 'leger_nilai_kelas.pdf');
     }
