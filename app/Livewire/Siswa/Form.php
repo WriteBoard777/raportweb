@@ -50,7 +50,8 @@ class Form extends Component
                     'nama' => $siswa->nama,
                     'nama_pgl' => $siswa->nama_pgl,
                     'jenis_kelamin' => $siswa->jenis_kelamin,
-                    'nama_orang_tua' => json_decode($siswa->nama_orang_tua ?? '[]', true),
+                    // langsung isi array, karena Eloquent sudah cast otomatis
+                    'nama_orang_tua' => $siswa->nama_orang_tua ?? [],
                 ]);
             }
         }
@@ -76,7 +77,8 @@ class Form extends Component
                 'nama' => $this->nama,
                 'nama_pgl' => $this->nama_pgl,
                 'jenis_kelamin' => $this->jenis_kelamin,
-                'nama_orang_tua' => json_encode($this->nama_orang_tua),
+                // simpan array langsung, biarkan Eloquent yang encode ke JSON
+                'nama_orang_tua' => $this->nama_orang_tua,
             ]
         );
 

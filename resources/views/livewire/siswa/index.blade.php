@@ -6,9 +6,11 @@
 
     <div class="flex justify-between items-center mb-6">
         <flux:input wire:model.live="search" placeholder="Cari siswa..." class="w-sm" />
-        <flux:button wire:click.stop="$dispatch('openForm')">
-            + Tambah Siswa
-        </flux:button>
+
+        <div class="flex gap-2">
+            <flux:button wire:click.stop="$dispatch('openForm')">+ Tambah Siswa</flux:button>
+            <flux:button wire:click.stop="$dispatch('openImport')">Import Excel</flux:button>
+        </div>
     </div>
 
     <div class="overflow-x-auto border rounded-lg shadow-sm bg-white dark:bg-gray-900">
@@ -36,7 +38,7 @@
                         <td class="px-4 py-3 text-sm">{{ $s->nama }}</td>
                         <td class="px-4 py-3 text-sm">{{ $s->jenis_kelamin }}</td>
                         <td class="px-4 py-3 text-sm">
-                            {{ implode(', ', json_decode($s->nama_orang_tua ?? '[]')) }}
+                            {{ implode(', ', $s->nama_orang_tua) }}
                         </td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex justify-end gap-2">
@@ -70,4 +72,5 @@
 
     {{-- Komponen form modal --}}
     <livewire:siswa.form />
+    <livewire:siswa.import />
 </section>

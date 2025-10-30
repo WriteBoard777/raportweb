@@ -24,7 +24,7 @@
                 <select wire:model.defer="namaOrtuTerpilih" class="border rounded-md p-2 text-sm dark:bg-gray-700 dark:text-white">
                     <option value="">-- Pilih Orang Tua --</option>
                     @php
-                        $ortu = json_decode($siswa->nama_orang_tua ?? '[]', true);
+                        $ortu = $siswa->nama_orang_tua;
                     @endphp
                     @if(isset($ortu[0]))
                         <option value="{{ $ortu[0] }}">{{ $ortu[0] }} (Ayah)</option>

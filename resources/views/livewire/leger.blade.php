@@ -22,6 +22,7 @@
                     @endforeach
                     <th class="px-4 py-2 text-center text-sm font-semibold">Jumlah Nilai</th>
                     <th class="px-4 py-2 text-center text-sm font-semibold">Rata-rata</th>
+                    <th class="px-4 py-2 text-center text-sm font-semibold">Peringkat</th> {{-- Tambahan --}}
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
@@ -36,8 +37,14 @@
 
                         @foreach($activeMapels as $mapel)
                             @php
-                                $nilai = $nilaiData[$siswa->id]->firstWhere('mapel_id', $mapel->id) ?? null;
-                                $nilaiAkhir = $nilai ? round(($nilai->nilai_harian + $nilai->nilai_uts + $nilai->nilai_uas)/3) : null;
+                                $nilai = isset($nilaiData[$siswa->id])
+                                    ? $nilaiData[$siswa->id]->firstWhere('mapel_id', $mapel->id)
+                                    : null;
+                            
+                                $nilaiAkhir = $nilai
+                                    ? round(($nilai->nilai_harian + $nilai->nilai_uts + $nilai->nilai_uas) / 3)
+                                    : null;
+                            
                                 $totalNilai += $nilaiAkhir ?? 0;
                             @endphp
                             <td class="px-4 py-3 text-center">{{ $nilaiAkhir ?? '-' }}</td>
@@ -45,6 +52,7 @@
 
                         <td class="px-4 py-3 text-center">{{ $totalNilai }}</td>
                         <td class="px-4 py-3 text-center">{{ $mapelCount ? round($totalNilai/$mapelCount) : '-' }}</td>
+                        <td class="px-4 py-3 text-center">{{ $ranks[$siswa->id] ?? '-' }}</td> {{-- Tambahan --}}
                     </tr>
                 @endforeach
             </tbody>

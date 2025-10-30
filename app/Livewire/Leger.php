@@ -52,7 +52,6 @@ class Leger extends Component
             ->orderBy('nama')
             ->paginate(10);
 
-        // Ambil semua nilai siswa hanya untuk mapel aktif user
         $nilaiData = collect();
         if (count($this->mapelIds)) {
             $nilaiData = Nilai::whereIn('mapel_id', $this->mapelIds)
@@ -61,14 +60,41 @@ class Leger extends Component
                 ->groupBy('siswa_id');
         }
 
-        return view('livewire.leger', compact('siswas', 'nilaiData'));
+        // Hitung total nilai untuk peringkat
+        $ranking = [];
+        foreach ($siswas as $siswa) {
+            $total = 0;
+            foreach ($this->activeMapels as $mapel) {
+                $nilai = isset($nilaiData[$siswa->id])
+                    ? $nilaiData[$siswa->id]->firstWhere('mapel_id', $mapel->id)
+                    : null;
+            
+                $nilaiAkhir = $nilai
+                    ? round(($nilai->nilai_harian + $nilai->nilai_uts + $nilai->nilai_uas) / 3)
+                    : null;
+            
+                $total += $nilaiAkhir ?? 0;
+            }
+            $ranking[$siswa->id] = $total;
+        }
+
+        // Urutkan dari terbesar ke terkecil
+        arsort($ranking);
+
+        // Tentukan peringkat
+        $ranks = [];
+        $rank = 1;
+        foreach (array_keys($ranking) as $siswaId) {
+            $ranks[$siswaId] = $rank++;
+        }
+
+        return view('livewire.leger', compact('siswas', 'nilaiData', 'ranks'));
     }
 
     public function exportPdf()
     {
         $userId = Auth::id();
 
-        // Ambil mapel aktif user
         $mapels = Mapel::orderBy('nama_mapel')
             ->get()
             ->filter(fn($mapel) =>
@@ -79,19 +105,41 @@ class Leger extends Component
             );
 
         $mapelIds = $mapels->pluck('id')->toArray();
-
         $siswas = Siswa::orderBy('nama')->get();
 
         $nilaiData = Nilai::whereIn('mapel_id', $mapelIds)
             ->get()
             ->groupBy('siswa_id');
 
-        $pdf = Pdf::loadView('pdf.leger_kelas', compact('siswas', 'mapels', 'nilaiData'))
+        // Hitung total nilai & peringkat
+        $ranking = [];
+        foreach ($siswas as $siswa) {
+            $total = 0;
+            foreach ($mapels as $mapel) {
+                $nilai = isset($nilaiData[$siswa->id])
+                    ? $nilaiData[$siswa->id]->firstWhere('mapel_id', $mapel->id)
+                    : null;
+            
+                $nilaiAkhir = $nilai
+                    ? round(($nilai->nilai_harian + $nilai->nilai_uts + $nilai->nilai_uas) / 3)
+                    : null;
+            
+                $total += $nilaiAkhir ?? 0;
+            }
+            $ranking[$siswa->id] = $total;
+        }
+
+        arsort($ranking);
+
+        $ranks = [];
+        $rank = 1;
+        foreach (array_keys($ranking) as $siswaId) {
+            $ranks[$siswaId] = $rank++;
+        }
+
+        $pdf = Pdf::loadView('pdf.leger_kelas', compact('siswas', 'mapels', 'nilaiData', 'ranks'))
             ->setPaper('a4','landscape');
 
-        return response()->streamDownload(
-            fn() => print($pdf->output()), 
-            'leger_nilai_kelas.pdf'
-        );
+        return response()->streamDownload(fn() => print($pdf->output()), 'leger_nilai_kelas.pdf');
     }
 }
