@@ -16,6 +16,9 @@ class CetakRaport extends Component
     public $siswaId;
     public $tanggalCetak;
     public $namaOrtuTerpilih;
+    public $lokasi;
+    public $semester;
+    public $keputusanTerpilih = null;
 
     // Tambahkan dua ini agar Livewire mengenali properti yang dipakai wire:model
     public $deskripsiAtas = [];
@@ -23,13 +26,21 @@ class CetakRaport extends Component
 
     public function mount($siswaId)
     {
+        $user = Auth::user();
+        
         $this->siswaId = $siswaId;
         $this->tanggalCetak = now()->toDateString();
         $this->namaOrtuTerpilih = null;
+        $this->lokasi = null;
+        
+        // Ambil semester dari user (bisa "2" atau "Genap")
+        $this->semester = $user->semester;
 
         // Pastikan array kosong agar tidak error di awal render
         $this->deskripsiAtas = [];
         $this->deskripsiBawah = [];
+
+        $this->keputusanTerpilih = null;
     }
 
     public function exportPdf()
@@ -47,7 +58,14 @@ class CetakRaport extends Component
 
         $absen = Absen::where('siswa_id', $siswa->id)->first();
 
-        // Kirim juga deskripsi atas & bawah ke view PDF
+        // Ambil kelas user dari tabel user (contoh: "VI A")
+        $kelasUser = $user->kelas ?? '';
+        preg_match('/^(X|IX|VIII|VII|VI|V|IV|III|II|I)/', $kelasUser, $match);
+        $romawiKelas = $match[0] ?? '';
+
+        // Gunakan keputusan yang dipilih user
+        $keputusan = $this->keputusanTerpilih;
+
         $pdf = Pdf::loadView('pdf.raport', [
             'user' => $user,
             'siswa' => $siswa,
@@ -58,6 +76,10 @@ class CetakRaport extends Component
             'namaOrtu' => $this->namaOrtuTerpilih,
             'deskripsiAtas' => $this->deskripsiAtas,
             'deskripsiBawah' => $this->deskripsiBawah,
+            'semester' => $this->semester,
+            'romawiKelas' => $romawiKelas,
+            'keputusanText' => $keputusan, // kirim hasil pilihan user
+            'lokasi' => $this->lokasi,
         ])->setPaper('a4', 'portrait');
 
         return response()->streamDownload(
@@ -81,6 +103,11 @@ class CetakRaport extends Component
             ->get();
 
         $absen = Absen::where('siswa_id', $this->siswaId)->first();
+
+        // Ambil kelas user dari tabel user (contoh: "VI A")
+        $kelasUser = $user->kelas ?? '';
+        preg_match('/^(I{1,3}|IV|VI|V|)/', $kelasUser, $match);
+        $romawiKelas = $match[0] ?? '';
 
         // Ambil semua TP milik guru/user yang sedang login
         $tps = Tp::where('user_id', $user->id)
@@ -109,14 +136,14 @@ class CetakRaport extends Component
                 });
             });
 
-
-
         return view('livewire.cetak-raport', [
             'siswa' => $siswa,
             'nilai' => $nilai,
             'nilaiEkstra' => $nilaiEkstra,
             'absen' => $absen,
             'tps' => $tps,
+            'semester' => $this->semester,
+            'romawi' => $romawiKelas,
         ]);
     }
 }

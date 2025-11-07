@@ -28,6 +28,26 @@
             <label class="block text-sm font-semibold mb-1">Tanggal Piagam</label>
             <flux:input type="date" wire:model.defer="tanggalPiagam" />
         </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Lokasi Kab</label>
+            <flux:input placeholder="Contoh: Cirebon" type="text" wire:model.defer="lokasi"/>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Lokasi Kecamatan</label>
+            <flux:input placeholder="Contoh: Plered" type="text" wire:model.defer="kecamatan"/>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">No Telp Sekolah</label>
+            <flux:input placeholder="Contoh: +6281-8899-9025" type="text" wire:model.defer="telpSekolah"/>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Email Sekolah</label>
+            <flux:input placeholder="Contoh: goldensunshinekids@writeboardedu.com" type="email" wire:model.defer="emailSekolah"/>
+        </div>
+        <div>
+            <label class="block text-sm font-semibold mb-1">Website Sekolah</label>
+            <flux:input placeholder="Contoh: writeboardedu.com" type="text" wire:model.defer="websiteSekolah"/>
+        </div>
     </div>
 
     {{-- Preview Piagam --}}

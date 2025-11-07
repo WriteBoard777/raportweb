@@ -37,16 +37,26 @@
                 @forelse ($siswas as $index => $siswa)
                     @php
                         $nomor = ($siswas->currentPage() - 1) * $siswas->perPage() + $index + 1;
-
+                    
                         $nilai = $nilaiData[$siswa->id] ?? null;
-                        $nilaiHarian = $nilai?->nilai_harian;
-                        $nilaiUTS = $nilai?->nilai_uts;
-                        $nilaiUAS = $nilai?->nilai_uas;
-                        $nilaiAkhir = $nilaiHarian && $nilaiUTS && $nilaiUAS
-                            ? round(($nilaiHarian + $nilaiUTS + $nilaiUAS)/3)
-                            : null;
-                        $progress = collect([$nilaiHarian, $nilaiUTS, $nilaiUAS])->contains(null) ? 'belum' : 'lengkap';
+                    
+                        // Ambil nilai dan ubah null/kosong menjadi 0 untuk perhitungan
+                        $nilaiHarian = is_numeric($nilai?->nilai_harian) ? $nilai->nilai_harian : 0;
+                        $nilaiUTS    = is_numeric($nilai?->nilai_uts) ? $nilai->nilai_uts : 0;
+                        $nilaiUAS    = is_numeric($nilai?->nilai_uas) ? $nilai->nilai_uas : 0;
+                    
+                        // Hitung nilai akhir (selalu dihitung, meskipun ada nilai kosong)
+                        $nilaiAkhir = round(($nilaiHarian + $nilaiUTS + $nilaiUAS) / 3);
+                    
+                        // Deteksi mana yang belum diisi (null atau kosong)
+                        $belumDiisi = [];
+                        if ($nilai?->nilai_harian === null || $nilai?->nilai_harian === '') $belumDiisi[] = 'Harian';
+                        if ($nilai?->nilai_uts === null || $nilai?->nilai_uts === '') $belumDiisi[] = 'UTS';
+                        if ($nilai?->nilai_uas === null || $nilai?->nilai_uas === '') $belumDiisi[] = 'UAS';
+                    
+                        $progress = empty($belumDiisi) ? 'lengkap' : 'belum';
                     @endphp
+
 
                     <tr>
                         <td class="px-4 py-3 text-sm">{{ $nomor }}</td>
@@ -54,11 +64,13 @@
                         <td class="px-4 py-3 text-sm">{{ $nilaiAkhir ?? '0' }}</td>
                         <td class="px-4 py-3 text-sm">
                             @if($progress == 'lengkap')
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-green-500 text-white">Lengkap</span>
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-green-500 text-white">
+                                    Lengkap
+                                </span>
                             @else
-                                <span class="px-2 py-1 text-xs font-semibold rounded bg-red-500 text-white"
-                                      title="Nilai Harian: {{ $nilaiHarian ?? 'kosong' }}, Nilai UTS: {{ $nilaiUTS ?? 'kosong' }}, Nilai UAS: {{ $nilaiUAS ?? 'kosong' }}">
-                                    Belum Lengkap
+                                <span class="px-2 py-1 text-xs font-semibold rounded bg-yellow-500 text-black"
+                                      title="Belum diisi: {{ implode(', ', $belumDiisi) }}">
+                                    Belum Lengkap ({{ implode(', ', $belumDiisi) }})
                                 </span>
                             @endif
                         </td>

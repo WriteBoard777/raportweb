@@ -41,12 +41,12 @@
     <div class="text-center">
         <img src="{{ public_path('img/logo_tutwuri.png') }}" width="90" alt="Logo Tut Wuri">
         <div class="mt-2">
-            <h3>PEMERINTAH KABUPATEN CIREBON</h3>
-            <h3>DINAS PENDIDIKAN</h3>
-            <h2 style="font-size:20px;">SDIT ALIEF MARDHIYAH</h2>
-            <h3 style="font-size:14px;">KECAMATAN PLERED</h3>
-            <p style="font-size:12px;">Jl. Otto Iskandardinata Blok Asinan | Telp. 081546876646</p>
-            <p style="font-size:11px;">Email: sditaliefmardhiyah@gmail.com | Website: aliefmardhiyah.org</p>
+            <h3 style="text-transform: uppercase;">PEMERINTAH KABUPATEN {{ $lokasi }}</h3>
+            <h3 style="text-transform: uppercase;">DINAS PENDIDIKAN</h3>
+            <h2 style="font-size:20px; text-transform: uppercase;">{{ $user->asal_sekolah }}</h2>
+            <h3 style="font-size:14px; text-transform: uppercase;">KECAMATAN {{ $kecamatan }}</h3>
+            <p style="font-size:12px;">{{ $user->alamat }} | Telp. {{ $telpSekolah }}</p>
+            <p style="font-size:11px;">Email: {{ $emailSekolah }} | Website: {{ $websiteSekolah }}</p>
         </div>
     </div>
 
@@ -99,7 +99,7 @@
                         $formattedTanggal = $tanggal->day . ' ' . $bulanIndonesia[$tanggal->month] . ' ' . $tanggal->year;
                     @endphp
 
-                    Cirebon, {{ $formattedTanggal }} <br>
+                    {{ $lokasi }}, {{ $formattedTanggal }} <br>
                     Guru Kelas<br><br><br><br>
                     <b><u>{{ $user->name ?? 'Nama Guru' }}</u></b><br>
                     {{ $user->nip ?? '-' }}

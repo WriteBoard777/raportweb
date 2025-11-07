@@ -14,6 +14,11 @@ class PeringkatPiagam extends Component
     public $peringkat;
     public $nomorSurat;
     public $tanggalPiagam;
+    public $lokasi;
+    public $kecamatan;
+    public $telpSekolah;
+    public $emailSekolah;
+    public $websiteSekolah;
 
     // tambahan untuk ditampilkan di view
     public $totalNilaiAkhir = 0;
@@ -54,6 +59,11 @@ class PeringkatPiagam extends Component
             'totalNilai' => $totalNilaiAkhir,
             'jumlahMapel' => $jumlahMapel,
             'nomorSurat' => $this->nomorSurat ?: '---',
+            'lokasi' => $this->lokasi ?: '-',
+            'kecamatan' => $this->kecamatan ?: '-',
+            'websiteSekolah' => $this->websiteSekolah ?: 'writeboardedu.com',
+            'telpSekolah' => $this->telpSekolah ?: '-',
+            'emailSekolah' => $this->emailSekolah ?: '-',
             'tanggalPiagam' => $this->tanggalPiagam
                 ? date('d F Y', strtotime($this->tanggalPiagam))
                 : now()->translatedFormat('d F Y'),

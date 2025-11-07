@@ -43,6 +43,7 @@
             /* sisanya tetap */
             .table-sm th, .table-sm td { padding: 4px 6px; }
             .table-borderless td, .table-borderless th { border: none !important; }
+            .table-bordered td, .table-bordered th { border: 1px solid #000 !important; }
             .text-center { text-align: center; }
             .text-dark { color: #000; }
             .fw-800 { font-weight: 800; }
@@ -176,18 +177,42 @@
                 </tbody>
             </table>
 
-            {{-- ABSENSI --}}
-            <table class="table-sm mb-3" style="width: 45%;">
-                <thead>
-                    <tr class="text-center bg-primary text-dark">
-                        <th colspan="3">Ketidakhadiran</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Sakit</td><td>:</td><td>{{ $absen->sakit ?? 0 }} hari</td></tr>
-                    <tr><td>Izin</td><td>:</td><td>{{ $absen->izin ?? 0 }} hari</td></tr>
-                    <tr><td>Tanpa Keterangan</td><td>:</td><td>{{ $absen->alfa ?? 0 }} hari</td></tr>
-                </tbody>
+            {{-- ABSENSI & KEPUTUSAN --}}
+            <table class="table-borderless" style="width: 100%; margin-top: 10px; table-layout: fixed; padding: 0;">
+                <tr>
+                    {{-- Kolom 1: Ketidakhadiran --}}
+                    <td style="width: 50%; vertical-align: top;">
+                        <table class="table-sm table-bordered" style="width: 100%">
+                            <thead>
+                                <tr class="text-center bg-primary text-dark">
+                                    <th colspan="3">Ketidakhadiran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Sakit</td><td>:</td><td>{{ $absen->sakit ?? 0 }} hari</td></tr>
+                                <tr><td>Izin</td><td>:</td><td>{{ $absen->izin ?? 0 }} hari</td></tr>
+                                <tr><td>Tanpa Keterangan</td><td>:</td><td>{{ $absen->alfa ?? 0 }} hari</td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+
+                    {{-- Kolom 2: Keputusan --}}
+                    <td style="width: 50%; vertical-align: top;">
+                        <table class="table-sm table-bordered" style="width: 100%;">
+                            <tbody class="text-dark">
+                                <tr>
+                                    <td>
+                                        <strong>Keputusan :</strong><br>
+                                        <p style="margin: 4px 0;">
+                                            Berdasarkan pencapaian seluruh kompetensi, peserta didik dinyatakan :
+                                        </p>
+                                        <strong>{{ $keputusanText }}</strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
             </table>
 
             {{-- TANDA TANGAN --}}
@@ -197,7 +222,7 @@
                         <td></td>
                         <td></td>
                         <td>
-                            Cirebon, {{
+                            {{ $lokasi }}, {{
                                 \Carbon\Carbon::parse($tanggalCetak)
                                     ->locale('id') // ubah locale ke Indonesia
                                     ->timezone('Asia/Jakarta') // opsional, untuk zona waktu Indonesia

@@ -18,6 +18,12 @@
                 <input type="date" wire:model.defer="tanggalCetak" class="border rounded-md p-2 text-sm dark:bg-gray-700 dark:text-white">
             </div>
 
+            {{-- Input Lokasi --}}
+            <div>
+                <label class="block text-xs font-semibold mb-1">Lokasi:</label>
+                <input type="text" placeholder="Contoh : Cirebon " wire:model.defer="lokasi" class="border rounded-md p-2 text-sm dark:bg-gray-700 dark:text-white">
+            </div>
+
             {{-- Pilihan Orang Tua --}}
             <div>
                 <label class="block text-xs font-semibold mb-1">Nama Orang Tua:</label>
@@ -161,4 +167,44 @@
             </tbody>
         </table>
     </div>
+
+    @php
+        $semesterLower = strtolower(trim($semester));
+        $isGenap = in_array($semesterLower, ['2', 'genap']);
+    @endphp
+
+    @if ($isGenap)
+        <div class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white w-2/5">
+            <label class="block text-xs font-semibold mb-1">Keputusan:</label>
+
+            @if ($romawi === 'VI')
+                <select wire:model.defer="keputusanTerpilih" class="w-full text-sm border rounded-md p-2 dark:bg-gray-700 dark:text-white">
+                    <option value="">-- Pilih Keputusan --</option>
+                    <option value="LULUS dari Satuan Pendidikan">LULUS dari Satuan Pendidikan</option>
+                    <option value="TIDAK LULUS">TIDAK LULUS</option>
+                </select>
+            @else
+                @php
+                    $romawiMap = ['I','II','III','IV','V', 'VI'];
+                    $nextIndex = array_search($romawi, $romawiMap);
+                    $kelasNaik = $nextIndex !== false && $nextIndex < count($romawiMap) - 1
+                        ? $romawiMap[$nextIndex + 1]
+                        : null;
+                @endphp
+
+                <select wire:model.defer="keputusanTerpilih" class="w-full text-sm border rounded-md p-2 dark:bg-gray-700 dark:text-white">
+                    <option value="">-- Pilih Keputusan --</option>
+                    @if($kelasNaik)
+                        <option value="NAIK ke kelas {{ $kelasNaik }}">NAIK ke kelas {{ $kelasNaik }}</option>
+                    @endif
+                    <option value="TIDAK NAIK">TIDAK NAIK</option>
+                </select>
+            @endif
+        </div>
+    @else
+        <div class="border rounded-lg p-4 bg-blue-50 text-gray-800 w-2/5">
+            <p><strong>Keputusan :</strong></p>
+            <p>Semester ini masih berlangsung. Keputusan naik/lulus akan ditentukan di akhir tahun.</p>
+        </div>
+    @endif
 </section>

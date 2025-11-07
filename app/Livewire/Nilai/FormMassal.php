@@ -50,21 +50,26 @@ class FormMassal extends Component
     public function save()
     {
         $userId = Auth::id();
-
+    
         foreach ($this->nilaiData as $siswaId => $nilai) {
             if (!is_array($nilai)) continue;
-
+    
+            // konversi string kosong menjadi null
+            $nilaiHarian = $nilai['nilai_harian'] === '' ? null : $nilai['nilai_harian'];
+            $nilaiUts    = $nilai['nilai_uts'] === '' ? null : $nilai['nilai_uts'];
+            $nilaiUas    = $nilai['nilai_uas'] === '' ? null : $nilai['nilai_uas'];
+    
             Nilai::updateOrCreate(
                 ['siswa_id' => $siswaId, 'mapel_id' => $this->mapelId],
                 [
                     'user_id' => $userId,
-                    'nilai_harian' => $nilai['nilai_harian'] ?? null,
-                    'nilai_uts' => $nilai['nilai_uts'] ?? null,
-                    'nilai_uas' => $nilai['nilai_uas'] ?? null,
+                    'nilai_harian' => $nilaiHarian,
+                    'nilai_uts' => $nilaiUts,
+                    'nilai_uas' => $nilaiUas,
                 ]
             );
         }
-
+    
         $this->showForm = false;
         $this->dispatch('nilaiUpdated');
     }
