@@ -41,12 +41,12 @@
     <div class="text-center">
         <img src="{{ public_path('img/logo_tutwuri.png') }}" width="90" alt="Logo Tut Wuri">
         <div class="mt-2">
-            <h3 style="text-transform: uppercase;">PEMERINTAH KABUPATEN {{ $lokasi }}</h3>
+            <h3 style="text-transform: uppercase;">PEMERINTAH KABUPATEN {{ $user->detail->kabupaten }}</h3>
             <h3 style="text-transform: uppercase;">DINAS PENDIDIKAN</h3>
-            <h2 style="font-size:20px; text-transform: uppercase;">{{ $user->asal_sekolah }}</h2>
-            <h3 style="font-size:14px; text-transform: uppercase;">KECAMATAN {{ $kecamatan }}</h3>
-            <p style="font-size:12px;">{{ $user->alamat }} | Telp. {{ $telpSekolah }}</p>
-            <p style="font-size:11px;">Email: {{ $emailSekolah }} | Website: {{ $websiteSekolah }}</p>
+            <h2 style="font-size:20px; text-transform: uppercase;">{{ $user->detail->asal_sekolah }}</h2>
+            <h3 style="font-size:14px; text-transform: uppercase;">KECAMATAN {{ $user->detail->kecamatan }}</h3>
+            <p style="font-size:12px;">{{ $user->detail->alamat }} | Telp. {{ $user->detail->telp_sekolah }}</p>
+            <p style="font-size:11px;">Email: {{ $user->detail->email_sekolah }} | Website: {{ $user->detail->web_sekolah }}</p>
         </div>
     </div>
 
@@ -70,7 +70,7 @@
     <div class="text-center mt-8" style="line-height:1.6; font-size:15px;">
         <p>
             Atas prestasi belajar dengan jumlah total nilai <b>{{ $totalNilai ?? '-' }}</b>. <br>
-            Pada kelas {{ $user->kelas ?? '-' }} Tahun Pelajaran {{ $user->tahun_ajaran ?? date('Y') }}. <br>
+            Pada kelas {{ $user->detail->kelas ?? '-' }} Tahun Pelajaran {{ $user->detail->tahun_ajaran ?? date('Y') }}. <br>
             Semoga prestasi ini menjadi motivasi untuk meraih kesuksesan di masa depan.
         </p>
     </div>
@@ -81,9 +81,9 @@
             <tr>
                 <td class="text-center" style="font-size:14px;">
                     Mengetahui, <br>
-                    Kepala Sekolah {{ $user->asal_sekolah ?? 'Nama Sekolah' }}<br><br><br><br>
-                    <b><u>{{ $user->nama_kepala_sekolah ?? 'Nama Kepala Sekolah' }}</u></b><br>
-                    {{ $user->nip_kepala_sekolah ?? '-' }}
+                    Kepala Sekolah {{ $user->detail->asal_sekolah ?? 'Nama Sekolah' }}<br><br><br><br>
+                    <b><u>{{ $user->detail->nama_kepala_sekolah ?? 'Nama Kepala Sekolah' }}</u></b><br>
+                    {{ $user->detail->nip_kepala_sekolah ?? '-' }}
                 </td>
 
                 <td class="text-center" style="font-size:14px;">
@@ -99,10 +99,10 @@
                         $formattedTanggal = $tanggal->day . ' ' . $bulanIndonesia[$tanggal->month] . ' ' . $tanggal->year;
                     @endphp
 
-                    {{ $lokasi }}, {{ $formattedTanggal }} <br>
+                    {{ $user->detail->kabupaten }}, {{ $formattedTanggal }} <br>
                     Guru Kelas<br><br><br><br>
-                    <b><u>{{ $user->name ?? 'Nama Guru' }}</u></b><br>
-                    {{ $user->nip ?? '-' }}
+                    <b><u>{{ $user->detail->name ?? 'Nama Guru' }}</u></b><br>
+                    {{ $user->detail->nip ?? '-' }}
                 </td>
             </tr>
         </table>

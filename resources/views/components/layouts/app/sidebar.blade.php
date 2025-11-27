@@ -23,6 +23,14 @@
 
                     <flux:navlist.item 
                         icon="users" 
+                        :href="route('detail-user')" 
+                        :current="request()->routeIs('detail-user')" 
+                        wire:navigate>
+                        {{ __('Data Sekolah') }}
+                    </flux:navlist.item>
+
+                    <flux:navlist.item 
+                        icon="users" 
                         :href="route('siswa.index')" 
                         :current="request()->routeIs('siswa.index')" 
                         wire:navigate>

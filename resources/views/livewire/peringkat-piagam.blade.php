@@ -28,26 +28,6 @@
             <label class="block text-sm font-semibold mb-1">Tanggal Piagam</label>
             <flux:input type="date" wire:model.defer="tanggalPiagam" />
         </div>
-        <div>
-            <label class="block text-sm font-semibold mb-1">Lokasi Kab</label>
-            <flux:input placeholder="Contoh: Cirebon" type="text" wire:model.defer="lokasi"/>
-        </div>
-        <div>
-            <label class="block text-sm font-semibold mb-1">Lokasi Kecamatan</label>
-            <flux:input placeholder="Contoh: Plered" type="text" wire:model.defer="kecamatan"/>
-        </div>
-        <div>
-            <label class="block text-sm font-semibold mb-1">No Telp Sekolah</label>
-            <flux:input placeholder="Contoh: +6281-8899-9025" type="text" wire:model.defer="telpSekolah"/>
-        </div>
-        <div>
-            <label class="block text-sm font-semibold mb-1">Email Sekolah</label>
-            <flux:input placeholder="Contoh: goldensunshinekids@writeboardedu.com" type="email" wire:model.defer="emailSekolah"/>
-        </div>
-        <div>
-            <label class="block text-sm font-semibold mb-1">Website Sekolah</label>
-            <flux:input placeholder="Contoh: writeboardedu.com" type="text" wire:model.defer="websiteSekolah"/>
-        </div>
     </div>
 
     {{-- Preview Piagam --}}
@@ -70,10 +50,10 @@
                 <div class="mt-2">
                     <h1 class="font-extrabold text-base">PEMERINTAH KABUPATEN CIREBON</h1>
                     <h1 class="font-extrabold text-base">DINAS PENDIDIKAN</h1>
-                    <h2 class="font-semibold text-lg">SDIT ALIEF MARDHIYAH</h2>
+                    <h2 class="font-semibold text-lg">GOLDEN SUNSHINE KIDS</h2>
                     <h3 class="text-sm">KECAMATAN PLERED</h3>
-                    <p class="text-xs">Jl. Otto Iskandardinata Blok Asinan | Telp. 081546876646</p>
-                    <p class="text-xs">Email: sditaliefmardhiyah@gmail.com | Website: aliefmardhiyah.org</p>
+                    <p class="text-xs">Jl. Otto Iskandardinata | Telp. 081546889033</p>
+                    <p class="text-xs">Email: emailkamu@gmail.com | Website: websitekamu.com</p>
                 </div>
             </div>
 
@@ -98,7 +78,7 @@
             {{-- DESCRIPTION --}}
             <div class="text-center mt-8 leading-relaxed text-[15px]">
                 <p>Atas prestasi belajar dengan jumlah total nilai <b>{{ $totalNilai ?? '-' }}</b>.</p>
-                <p>Pada kelas {{ Auth::user()->kelas ?? '-' }} Tahun Pelajaran {{ Auth::user()->tahun_ajaran ?? date('Y') }}.</p>
+                <p>Pada kelas {{ $user->kelas ?? '-' }} Tahun Pelajaran {{ $user->tahun_ajaran ?? date('Y') }}.</p>
                 <p>Semoga prestasi ini menjadi motivasi untuk meraih kesuksesan di masa depan.</p>
             </div>
 
@@ -107,16 +87,16 @@
                 <div class="grid grid-cols-2 text-center text-sm">
                     <div>
                         Mengetahui, <br>
-                        Kepala Sekolah {{ Auth::user()->asal_sekolah ?? 'Nama Sekolah' }}
-                        <div class="mt-20 font-bold underline">{{ Auth::user()->nama_kepala_sekolah ?? 'Nama Kepala Sekolah' }}</div>
-                        <div>{{ Auth::user()->nip_kepala_sekolah ?? '-' }}</div>
+                        Kepala Sekolah {{ $user->asal_sekolah ?? 'Nama Sekolah' }}
+                        <div class="mt-20 font-bold underline">{{ $user->nama_kepala_sekolah ?? 'Nama Kepala Sekolah' }}</div>
+                        <div>{{ $user->nip_kepala_sekolah ?? '-' }}</div>
                     </div>
 
                     <div>
                         Cirebon, {{ \Carbon\Carbon::parse($tanggalPiagam)->translatedFormat('d F Y') }} <br>
                         Guru Kelas
-                        <div class="mt-20 font-bold underline">{{ Auth::user()->name ?? 'Nama Guru' }}</div>
-                        <div>{{ Auth::user()->nip ?? '-' }}</div>
+                        <div class="mt-20 font-bold underline">{{ $user->name ?? 'Nama Guru' }}</div>
+                        <div>{{ $user->nip ?? '-' }}</div>
                     </div>
                 </div>
 

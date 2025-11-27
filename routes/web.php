@@ -10,6 +10,7 @@ use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
 
 // Komponen CRUD baru
+use App\Livewire\DetailUser\Index as DetailUser;
 use App\Livewire\Siswa\Index as SiswaIndex;
 use App\Livewire\Mapel\Index as MapelIndex;
 use App\Livewire\Ekstra\Index as EkstraIndex;
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', \App\Livewire\Dashboard::class)->name('dashboard');
 
     // 🔹 ROUTES CRUD (Livewire Pages)
+    Route::get('detail-user', DetailUser::class)->name('detail-user');
     Route::get('siswa', SiswaIndex::class)->name('siswa.index');
     Route::get('mapel', MapelIndex::class)->name('mapel.index');
     Route::get('ekstra', EkstraIndex::class)->name('ekstra.index');

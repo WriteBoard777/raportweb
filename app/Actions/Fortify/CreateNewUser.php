@@ -20,7 +20,6 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'nip' => ['required', 'string', 'max:255'],
 
             'email' => [
                 'required',
@@ -30,33 +29,13 @@ class CreateNewUser implements CreatesNewUsers
                 Rule::unique(User::class),
             ],
 
-            'npsn' => ['required', 'string', 'max:255'],
-            'asal_sekolah' => ['required', 'string', 'max:255'],
-            'jenis_sekolah' => 'required|in:Negeri,Swasta',
-            'nama_kepala_sekolah' => ['required', 'string', 'max:255'],
-            'nip_kepala_sekolah' => ['required', 'string', 'max:255'],
-            'kelas' => ['required', 'string', 'max:255'],
-            'alamat' => ['required', 'string', 'max:500'],
-            'tahun_ajaran' => ['required', 'string', 'max:255'],
-            'semester' => ['required', 'string', 'max:255'],
-
             'password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
             'name' => $input['name'],
-            'nip' => $input['nip'],
             'email' => $input['email'],
             'password' => $input['password'],
-            'npsn' => $input['npsn'],
-            'asal_sekolah' => $input['asal_sekolah'],
-            'jenis_sekolah' => $input['jenis_sekolah'],
-            'nama_kepala_sekolah' => $input['nama_kepala_sekolah'],
-            'nip_kepala_sekolah' => $input['nip_kepala_sekolah'],
-            'kelas' => $input['kelas'],
-            'alamat' => $input['alamat'],
-            'tahun_ajaran' => $input['tahun_ajaran'],
-            'semester' => $input['semester'],
         ]);
     }
 }

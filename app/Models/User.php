@@ -22,18 +22,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'nip',
         'email',
         'password',
-        'npsn',
-        'asal_sekolah',
-        'jenis_sekolah',
-        'nama_kepala_sekolah',
-        'nip_kepala_sekolah',
-        'kelas',
-        'alamat',
-        'tahun_ajaran',
-        'semester',
     ];
 
     /**
@@ -74,6 +64,11 @@ class User extends Authenticatable
     }
 
     // 🔗 Relasi
+    public function detail()
+    {
+        return $this->hasOne(DetailUser::class);
+    }
+
     public function siswas()
     {
         return $this->hasMany(Siswa::class);

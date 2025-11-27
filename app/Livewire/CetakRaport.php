@@ -16,7 +16,6 @@ class CetakRaport extends Component
     public $siswaId;
     public $tanggalCetak;
     public $namaOrtuTerpilih;
-    public $lokasi;
     public $semester;
     public $keputusanTerpilih = null;
 
@@ -31,10 +30,9 @@ class CetakRaport extends Component
         $this->siswaId = $siswaId;
         $this->tanggalCetak = now()->toDateString();
         $this->namaOrtuTerpilih = null;
-        $this->lokasi = null;
         
         // Ambil semester dari user (bisa "2" atau "Genap")
-        $this->semester = $user->semester;
+        $this->semester = $user->detail->semester;
 
         // Pastikan array kosong agar tidak error di awal render
         $this->deskripsiAtas = [];
@@ -79,7 +77,6 @@ class CetakRaport extends Component
             'semester' => $this->semester,
             'romawiKelas' => $romawiKelas,
             'keputusanText' => $keputusan, // kirim hasil pilihan user
-            'lokasi' => $this->lokasi,
         ])->setPaper('a4', 'portrait');
 
         return response()->streamDownload(
@@ -105,7 +102,7 @@ class CetakRaport extends Component
         $absen = Absen::where('siswa_id', $this->siswaId)->first();
 
         // Ambil kelas user dari tabel user (contoh: "VI A")
-        $kelasUser = $user->kelas ?? '';
+        $kelasUser = $user->detail->kelas ?? '';
         preg_match('/^(I{1,3}|IV|VI|V|)/', $kelasUser, $match);
         $romawiKelas = $match[0] ?? '';
 

@@ -18,12 +18,6 @@
                 <input type="date" wire:model.defer="tanggalCetak" class="border rounded-md p-2 text-sm dark:bg-gray-700 dark:text-white">
             </div>
 
-            {{-- Input Lokasi --}}
-            <div>
-                <label class="block text-xs font-semibold mb-1">Lokasi:</label>
-                <input type="text" placeholder="Contoh : Cirebon " wire:model.defer="lokasi" class="border rounded-md p-2 text-sm dark:bg-gray-700 dark:text-white">
-            </div>
-
             {{-- Pilihan Orang Tua --}}
             <div>
                 <label class="block text-xs font-semibold mb-1">Nama Orang Tua:</label>
@@ -57,11 +51,11 @@
             <div>
                 <p><strong>Nama:</strong> {{ $siswa->nama ?? '-' }}</p>
                 <p><strong>NIS:</strong> {{ $siswa->nis ?? '-' }}</p>
-                <p><strong>Kelas:</strong> {{ Auth::user()->kelas ?? '-' }}</p>
+                <p><strong>Kelas:</strong> {{ Auth::user()->detail->kelas ?? '-' }}</p>
             </div>
             <div>
-                <p><strong>Wali Kelas:</strong> {{ Auth::user()->name ?? '-' }}</p>
-                <p><strong>Sekolah:</strong> {{ Auth::user()->asal_sekolah ?? '-' }}</p>
+                <p><strong>Wali Kelas:</strong> {{ Auth::user()->detail->name ?? '-' }}</p>
+                <p><strong>Sekolah:</strong> {{ Auth::user()->detail->asal_sekolah ?? '-' }}</p>
             </div>
         </div>
     </div>

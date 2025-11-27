@@ -75,12 +75,12 @@
                     <td class="fw-800">{{ $siswa->nama }}</td>
                     <td>Kelas</td>
                     <td>:</td>
-                    <td>{{ $user->kelas ?? '-' }}</td>
+                    <td>{{ $user->detail->kelas ?? '-' }}</td>
                 </tr>
 
                 @php
                     // Ambil kelas dari user
-                    $kelas = strtoupper(trim($user->kelas ?? '-'));
+                    $kelas = strtoupper(trim($user->detail->kelas ?? '-'));
 
                     // Ambil hanya bagian romawinya (I, II, III, IV, V, VI)
                     preg_match('/^(I{1,3}|IV|V|VI)/', $kelas, $match);
@@ -107,18 +107,18 @@
                 <tr>
                     <td>Sekolah</td>
                     <td>:</td>
-                    <td>{{ $user->asal_sekolah ?? '-' }}</td>
+                    <td>{{ $user->detail->asal_sekolah ?? '-' }}</td>
                     <td>Semester</td>
                     <td>:</td>
-                    <td>{{ $user->semester ?? '-' }}</td>
+                    <td>{{ $user->detail->semester ?? '-' }}</td>
                 </tr>
                 <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td>{{ $user->alamat ?? '-' }}</td>
+                    <td>{{ $user->detail->alamat ?? '-' }}</td>
                     <td>Tahun Pelajaran</td>
                     <td>:</td>
-                    <td>{{ $user->tahun_ajaran ?? date('Y') }}</td>
+                    <td>{{ $user->detail->tahun_ajaran ?? date('Y') }}</td>
                 </tr>
             </table>
 
@@ -197,20 +197,51 @@
                     </td>
 
                     {{-- Kolom 2: Keputusan --}}
+                    @php
+                        // Ambil semester
+                        $semesterLower = strtolower(trim($user->detail->semester ?? '-'));
+                        $isGenap = in_array($semesterLower, ['2', 'genap']);
+
+                        // Ambil kelas romawi (I, II, III, IV, V, VI)
+                        $kelas = strtoupper(trim($user->detail->kelas ?? '-'));
+                        preg_match('/^(I{1,3}|IV|V|VI)/', $kelas, $match);
+                        $romawi = $match[0] ?? '';
+
+                        // Tentukan keputusan otomatis kalau belum diset
+                        $keputusan = $keputusanText ?? null;
+
+                        if (!$keputusan && $isGenap) {
+                            if ($romawi === 'VI') {
+                                $keputusan = 'LULUS dari Satuan Pendidikan';
+                            } else {
+                                $romawiMap = ['I','II','III','IV','V','VI'];
+                                $nextIndex = array_search($romawi, $romawiMap);
+                                $kelasNaik = $nextIndex !== false && $nextIndex < count($romawiMap) - 1
+                                    ? $romawiMap[$nextIndex + 1]
+                                    : null;
+                                $keputusan = $kelasNaik ? "NAIK ke kelas $kelasNaik" : "TIDAK NAIK";
+                            }
+                        } elseif (!$keputusan && !$isGenap) {
+                            $keputusan = 'Semester ini masih berlangsung. Keputusan naik/lulus akan ditentukan di akhir tahun.';
+                        }
+                    @endphp
+
                     <td style="width: 50%; vertical-align: top;">
-                        <table class="table-sm table-bordered" style="width: 100%;">
-                            <tbody class="text-dark">
-                                <tr>
-                                    <td>
-                                        <strong>Keputusan :</strong><br>
-                                        <p style="margin: 4px 0;">
-                                            Berdasarkan pencapaian seluruh kompetensi, peserta didik dinyatakan :
-                                        </p>
-                                        <strong>{{ $keputusanText }}</strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        @if ($isGenap)
+                            <table class="table-sm table-bordered" style="width: 100%;">
+                                <tbody class="text-dark">
+                                    <tr>
+                                        <td>
+                                            <strong>Keputusan :</strong><br>
+                                            <p style="margin: 4px 0;">
+                                                Berdasarkan pencapaian seluruh kompetensi, peserta didik dinyatakan :
+                                            </p>
+                                            <strong>{{ $keputusan }}</strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        @endif
                     </td>
                 </tr>
             </table>
@@ -222,7 +253,7 @@
                         <td></td>
                         <td></td>
                         <td>
-                            {{ $lokasi }}, {{
+                            {{ $user->detail->kabupaten }}, {{
                                 \Carbon\Carbon::parse($tanggalCetak)
                                     ->locale('id') // ubah locale ke Indonesia
                                     ->timezone('Asia/Jakarta') // opsional, untuk zona waktu Indonesia
@@ -233,12 +264,12 @@
                     <tr>
                         <td>Orang Tua / Wali</td>
                         <td></td>
-                        <td>Wali Kelas {{ $user->kelas }}</td>
+                        <td>Wali Kelas {{ $user->detail->kelas }}</td>
                     </tr>
                     <tr>
                         <td><br><br><br><br><u><strong>{{ $namaOrtu ?? '-' }}</u></strong></td>
                         <td></td>
-                        <td><br><br><br><br><u><strong>{{ $user->name }}</u><br>{{ $user->nip ?? '-' }}</strong></td>
+                        <td><br><br><br><br><u><strong>{{ $user->detail->name }}</u><br>{{ $user->detail->nip ?? '-' }}</strong></td>
                     </tr>
                     <tr><td colspan="3" style="height: 40px;"></td></tr>
                     <tr>
@@ -248,13 +279,13 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Kepala {{ $user->asal_sekolah }}</td>
+                        <td>Kepala {{ $user->detail->asal_sekolah }}</td>
                         <td></td>
                     </tr>
                     <tr><td colspan="3" style="height: 50px;"></td></tr>
                     <tr>
                         <td></td>
-                        <td><u><strong>{{ $user->nama_kepala_sekolah }}</u><br>{{ $user->nip_kepala_sekolah }}</strong></td>
+                        <td><u><strong>{{ $user->detail->nama_kepala_sekolah }}</u><br>{{ $user->detail->nip_kepala_sekolah }}</strong></td>
                         <td></td>
                     </tr>
                 </table>

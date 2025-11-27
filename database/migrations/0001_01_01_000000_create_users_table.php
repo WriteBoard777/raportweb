@@ -13,24 +13,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
-            $table->string('name');
-            $table->string('nip')->unique();
-
+            $table->string('name'); // Nama untuk tampilan akun
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-
-            $table->string('npsn')->nullable();
-            $table->string('asal_sekolah')->nullable();
-            $table->enum('jenis_sekolah', ['Negeri', 'Swasta']);
-            $table->string('nama_kepala_sekolah')->nullable();
-            $table->string('nip_kepala_sekolah')->nullable();
-            $table->string('kelas')->nullable();
-            $table->text('alamat')->nullable();
-
-            $table->string('tahun_ajaran')->nullable();
-            $table->string('semester')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

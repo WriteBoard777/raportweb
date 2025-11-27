@@ -14,11 +14,6 @@ class PeringkatPiagam extends Component
     public $peringkat;
     public $nomorSurat;
     public $tanggalPiagam;
-    public $lokasi;
-    public $kecamatan;
-    public $telpSekolah;
-    public $emailSekolah;
-    public $websiteSekolah;
 
     // tambahan untuk ditampilkan di view
     public $totalNilaiAkhir = 0;
@@ -59,11 +54,6 @@ class PeringkatPiagam extends Component
             'totalNilai' => $totalNilaiAkhir,
             'jumlahMapel' => $jumlahMapel,
             'nomorSurat' => $this->nomorSurat ?: '---',
-            'lokasi' => $this->lokasi ?: '-',
-            'kecamatan' => $this->kecamatan ?: '-',
-            'websiteSekolah' => $this->websiteSekolah ?: 'writeboardedu.com',
-            'telpSekolah' => $this->telpSekolah ?: '-',
-            'emailSekolah' => $this->emailSekolah ?: '-',
             'tanggalPiagam' => $this->tanggalPiagam
                 ? date('d F Y', strtotime($this->tanggalPiagam))
                 : now()->translatedFormat('d F Y'),
@@ -79,6 +69,8 @@ class PeringkatPiagam extends Component
     {
         $user = Auth::user();
         $siswa = Siswa::where('user_id', $user->id)->find($this->siswaId);
+
+        $detail_user = $user->detail;
 
         if ($siswa) {
             $nilaiRecords = Nilai::where('siswa_id', $siswa->id)->get();
@@ -97,6 +89,7 @@ class PeringkatPiagam extends Component
         }
 
         return view('livewire.peringkat-piagam', [
+            'user' => $detail_user,
             'siswa' => $siswa,
             'peringkat' => $this->peringkat,
             'totalNilai' => $this->totalNilaiAkhir,
